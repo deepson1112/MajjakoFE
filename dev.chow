@@ -1,0 +1,44 @@
+server {
+    server_name dev.chowchowexpress.com;
+
+    location / {
+        proxy_set_header Host $http_host;
+	proxy_pass http://0.0.0.0:8000;
+# Handle HTTPS URLs in proxied responses
+        sub_filter 'http://$host' 'https://$host';
+        sub_filter_once off;
+    	client_max_body_size 20M;
+
+	}
+
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/dev.chowchowexpress.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/dev.chowchowexpress.com/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+
+server {
+
+    listen 80;
+    listen [::]:80;
+    server_name dev.chowchowexpress.com;
+    return 301 https://$host$request_uri;   
+
+}
+
+server {
+    if ($host = dev.chowchowexpress.com) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    server_name dev.chowchowexpress.com;
+    listen 80;
+    return 404; # managed by Certbot
+
+
+}
+

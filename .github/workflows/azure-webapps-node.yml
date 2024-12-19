@@ -1,0 +1,50 @@
+name: Deploy Next Js project to Azure
+
+on:
+  push:
+    branches:
+      - server
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: appleboy/ssh-action@master
+        with:
+          HOST: ${{ secrets.HOST2 }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PORT: ${{ secrets.PORT }}
+          key: ${{ secrets.V2_SSH }}
+          script: |
+            # Ensure NVM is loaded
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+            # Ensure the correct version of Node.js is used
+            nvm install v20.12.2
+            nvm use v20.12.2
+
+            # Check if the correct Node version is active
+            node -v
+            npm -v
+
+            # Navigate to project directory
+            cd /var/www/ChowchowExpress-NextJs
+
+            # Pull latest changes
+            git pull origin-ssh server 
+
+            # Install dependencies and build the project
+            npm install
+            npm run build
+
+            # Ensure pm2 is installed globally
+            npm install -g pm2
+
+            # Restart the application using pm2
+            pm2 restart all
+
+                       
+            # Add any commands you need to run on your VPS, e.g., git pull, npm install, etc.

@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/4031c156-a971-43cb-8058-11cc74b1b99b/resourceGroups/Majjako_group/providers/Microsoft.Web/sites/MajjakoFe",
+    "appService.deploySubpath": "."
+}
