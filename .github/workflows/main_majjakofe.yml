@@ -24,7 +24,6 @@ jobs:
       - name: npm install, build, and test
         run: |
           npm install
-          npm install next react react-dom
           npm run build --if-present
           npm run test --if-present
 
@@ -60,4 +59,4 @@ jobs:
           app-name: 'MajjakoFe'
           slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_1A85E75ADA6A4F92AE74DA15D1B4427E }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_52DAEC2645AF4124A7065D936DC78CC1 }}
